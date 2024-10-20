@@ -1,0 +1,49 @@
+services:
+  nginx:
+    container_name: nginx
+    extends:
+      file: ./agrofast-api/docker-compose.yml
+      service: nginx
+
+  php-fpm:
+    container_name: php-fpm
+    extends:
+      file: ./agrofast-api/docker-compose.yml
+      service: php-fpm
+
+  postgres:
+    container_name: postgres
+    extends:
+      file: ./agrofast-api/docker-compose.yml
+      service: postgres
+
+  web:
+    container_name: web
+    build:
+      context: ./agrofast-web
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:3000"
+    volumes:
+      - ./agrofast-web:/var/www/html/web
+    networks:
+      - app-network
+
+  socket:
+    container_name: socket
+    build:
+      context: ./agrofast-socket
+      dockerfile: ./Dockerfile
+    ports:
+      - "8008:3000"
+    volumes:
+      - ./agrofast-socket:/var/www/html/socket
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
