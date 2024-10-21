@@ -1,10 +1,14 @@
 #!/bin/bash
 
+echo "--------------------------------------"
+echo "|     Instalando dependencias...     |"
+echo "--------------------------------------"
+
 declare -A dependencies=(
-  ["/agrofast-app"]="npm install"
-  ["/agrofast-api"]="composer install"
-  ["/agrofast-socket"]="npm install"
-  ["/agrofast-web"]="npm install"
+  ["$(pwd)/agrofast-app"]="npm install"
+  ["$(pwd)/agrofast-api"]="composer install"
+  ["$(pwd)/agrofast-socket"]="npm install"
+  ["$(pwd)/agrofast-web"]="npm install"
 )
 
 for dir in "${!dependencies[@]}"; do
