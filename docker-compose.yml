@@ -17,6 +17,12 @@ services:
       file: ./agrofast-api/docker-compose.yml
       service: agrofast-postgres
 
+  agrofast-redis:
+    container_name: agrofast-redis
+    extends:
+      file: ./agrofast-api/docker-compose.yml
+      service: agrofast-postgres
+
   agrofast-web:
     container_name: agrofast-web
     build:
