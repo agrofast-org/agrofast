@@ -1,24 +1,24 @@
 services:
-  nginx:
-    container_name: nginx
+  agrofast-nginx:
+    container_name: agrofast-nginx
     extends:
       file: ./agrofast-api/docker-compose.yml
-      service: nginx
+      service: agrofast-nginx
 
-  php-fpm:
-    container_name: php-fpm
+  agrofast-php-fpm:
+    container_name: agrofast-php-fpm
     extends:
       file: ./agrofast-api/docker-compose.yml
-      service: php-fpm
+      service: agrofast-php-fpm
 
-  postgres:
-    container_name: postgres
+  agrofast-postgres:
+    container_name: agrofast-postgres
     extends:
       file: ./agrofast-api/docker-compose.yml
-      service: postgres
+      service: agrofast-postgres
 
-  web:
-    container_name: web
+  agrofast-web:
+    container_name: agrofast-web
     build:
       context: ./agrofast-web
       dockerfile: ./Dockerfile
@@ -29,8 +29,8 @@ services:
     networks:
       - app-network
 
-  socket:
-    container_name: socket
+  agrofast-socket:
+    container_name: agrofast-socket
     build:
       context: ./agrofast-socket
       dockerfile: ./Dockerfile
