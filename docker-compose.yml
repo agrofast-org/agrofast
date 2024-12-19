@@ -19,12 +19,9 @@ services:
 
   agrofast-redis:
     container_name: agrofast-redis
-    image: redis:alpine
-    restart: always
-    ports:
-      - "6379:6379"
-    networks:
-      - agrofast-network
+    extends:
+      file: ./agrofast-api/docker-compose.yml
+      service: agrofast-postgres
 
   agrofast-data-bucket:
     image: minio/minio:latest
