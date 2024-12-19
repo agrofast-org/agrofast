@@ -17,6 +17,15 @@ services:
       file: ./agrofast-api/docker-compose.yml
       service: agrofast-postgres
 
+  agrofast-redis:
+    container_name: agrofast-redis
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - agrofast-network
+
   agrofast-data-bucket:
     image: minio/minio:latest
     container_name: agrofast-data-bucket
@@ -30,40 +39,36 @@ services:
       - minio_data:/data
     command: server /data --console-address ":9001"
 
-  agrofast-redis:
-    container_name: agrofast-redis
-    extends:
-      file: ./agrofast-api/docker-compose.yml
-      service: agrofast-postgres
+  # agrofast-web:
+  #   container_name: agrofast-web
+  #   build:
+  #     context: ./agrofast-web
+  #     dockerfile: ./Dockerfile
+  #   ports:
+  #     - "8000:3000"
+  #   volumes:
+  #     - ./agrofast-web:/var/www/html/web
+  #   networks:
+  #     - app-network
 
-  agrofast-web:
-    container_name: agrofast-web
-    build:
-      context: ./agrofast-web
-      dockerfile: ./Dockerfile
-    ports:
-      - "8000:3000"
-    volumes:
-      - ./agrofast-web:/var/www/html/web
-    networks:
-      - app-network
-
-  agrofast-socket:
-    container_name: agrofast-socket
-    build:
-      context: ./agrofast-socket
-      dockerfile: ./Dockerfile
-    ports:
-      - "8008:3000"
-    volumes:
-      - ./agrofast-socket:/var/www/html/socket
-    networks:
-      - app-network
+  # agrofast-socket:
+  #   container_name: agrofast-socket
+  #   build:
+  #     context: ./agrofast-socket
+  #     dockerfile: ./Dockerfile
+  #   ports:
+  #     - "8008:3000"
+  #   volumes:
+  #     - ./agrofast-socket:/var/www/html/socket
+  #   networks:
+  #     - app-network
 
 volumes:
   postgres_data:
   minio_data:
+  cache:
+    driver: local
 
 networks:
-  app-network:
+  agrofast-network:
     driver: bridge
