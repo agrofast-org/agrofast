@@ -1,0 +1,8 @@
+agrofast-api/
+agrofast-app/
+agrofast-socket/
+agrofast-web/
+agrofast-portfolio/
+agrofast-api(laravel-migration)
+
+.env

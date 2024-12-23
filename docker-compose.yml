@@ -21,7 +21,7 @@ services:
     container_name: agrofast-redis
     extends:
       file: ./agrofast-api/docker-compose.yml
-      service: agrofast-postgres
+      service: agrofast-redis
 
   agrofast-data-bucket:
     image: minio/minio:latest
@@ -36,29 +36,29 @@ services:
       - minio_data:/data
     command: server /data --console-address ":9001"
 
-  # agrofast-web:
-  #   container_name: agrofast-web
-  #   build:
-  #     context: ./agrofast-web
-  #     dockerfile: ./Dockerfile
-  #   ports:
-  #     - "8000:3000"
-  #   volumes:
-  #     - ./agrofast-web:/var/www/html/web
-  #   networks:
-  #     - app-network
+  agrofast-web:
+    container_name: agrofast-web
+    build:
+      context: ./agrofast-web
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:3000"
+    volumes:
+      - ./agrofast-web:/var/www/html/web
+    networks:
+      - agrofast-network
 
-  # agrofast-socket:
-  #   container_name: agrofast-socket
-  #   build:
-  #     context: ./agrofast-socket
-  #     dockerfile: ./Dockerfile
-  #   ports:
-  #     - "8008:3000"
-  #   volumes:
-  #     - ./agrofast-socket:/var/www/html/socket
-  #   networks:
-  #     - app-network
+  agrofast-socket:
+    container_name: agrofast-socket
+    build:
+      context: ./agrofast-socket
+      dockerfile: ./Dockerfile
+    ports:
+      - "8008:3000"
+    volumes:
+      - ./agrofast-socket:/var/www/html/socket
+    networks:
+      - agrofast-network
 
 volumes:
   postgres_data:
