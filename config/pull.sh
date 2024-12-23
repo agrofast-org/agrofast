@@ -4,6 +4,7 @@ declare -A dependencies=(
   [app]="$(pwd)/agrofast-app"
   [api]="$(pwd)/agrofast-api"
   [socket]="$(pwd)/agrofast-socket"
+  [portfolio]="$(pwd)/agrofast-portfolio"
   [web]="$(pwd)/agrofast-web"
 )
 
