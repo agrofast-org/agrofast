@@ -35,30 +35,44 @@ services:
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
+    networks:
+      - agrofast-network
 
   agrofast-web:
     container_name: agrofast-web
     build:
       context: ./agrofast-web
-      dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile.dev
     ports:
-      - "8000:3000"
+      - "3030:3030"
     volumes:
-      - ./agrofast-web:/var/www/html/web
+      - ./agrofast-web:/web
     networks:
       - agrofast-network
 
-  agrofast-socket:
-    container_name: agrofast-socket
+  agrofast-portfolio:
+    container_name: agrofast-portfolio
     build:
-      context: ./agrofast-socket
-      dockerfile: ./Dockerfile
+      context: ./agrofast-portfolio
+      dockerfile: ./Dockerfile.dev
     ports:
-      - "8008:3000"
+      - "3020:3020"
     volumes:
-      - ./agrofast-socket:/var/www/html/socket
+      - ./agrofast-portfolio:/web
     networks:
       - agrofast-network
+
+  # agrofast-socket:
+  #   container_name: agrofast-socket
+  #   build:
+  #     context: ./agrofast-socket
+  #     dockerfile: ./Dockerfile
+  #   ports:
+  #     - "8008:3000"
+  #   volumes:
+  #     - ./agrofast-socket:/var/www/html/socket
+  #   networks:
+  #     - agrofast-network
 
 volumes:
   postgres_data:
