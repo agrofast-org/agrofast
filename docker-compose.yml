@@ -58,7 +58,7 @@ services:
     ports:
       - "3020:3020"
     volumes:
-      - ./agrofast-portfolio:/web
+      - ./agrofast-portfolio:/portfolio
     networks:
       - agrofast-network
 
