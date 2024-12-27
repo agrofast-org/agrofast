@@ -24,19 +24,10 @@ services:
       service: agrofast-redis
 
   agrofast-data-bucket:
-    image: minio/minio:latest
     container_name: agrofast-data-bucket
-    ports:
-      - "9100:9000" # Porta de acesso ao bucket MinIO
-      - "9101:9001" # Porta de acesso ao painel MinIO
-    environment:
-      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
-      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
-    volumes:
-      - minio_data:/data
-    command: server /data --console-address ":9001"
-    networks:
-      - agrofast-network
+    extends:
+      file: ./agrofast-api/docker-compose.yml
+      service: agrofast-data-bucket
 
   agrofast-web:
     container_name: agrofast-web
