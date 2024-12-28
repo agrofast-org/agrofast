@@ -5,10 +5,10 @@ echo "|     Instalando dependencias...     |"
 echo "--------------------------------------"
 
 declare -A dependencies=(
-  ["$(pwd)/agrofast-app"]="npm install"
   ["$(pwd)/agrofast-api"]="composer install"
-  ["$(pwd)/agrofast-socket"]="npm install"
+  ["$(pwd)/agrofast-app"]="npm install"
   ["$(pwd)/agrofast-portfolio"]="npm install"
+  ["$(pwd)/agrofast-socket"]="npm install"
   ["$(pwd)/agrofast-web"]="npm install"
 )
 

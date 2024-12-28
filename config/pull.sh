@@ -1,10 +1,10 @@
 #!/bin/bash
 
 declare -A dependencies=(
-  [app]="$(pwd)/agrofast-app"
   [api]="$(pwd)/agrofast-api"
-  [socket]="$(pwd)/agrofast-socket"
+  [app]="$(pwd)/agrofast-app"
   [portfolio]="$(pwd)/agrofast-portfolio"
+  [socket]="$(pwd)/agrofast-socket"
   [web]="$(pwd)/agrofast-web"
 )
 
