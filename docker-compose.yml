@@ -1,9 +1,17 @@
 services:
   agrofast-nginx:
     container_name: agrofast-nginx
-    extends:
-      file: ./agrofast-api/docker-compose.yml
-      service: agrofast-nginx
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./agrofast-api/docker/nginx/conf.d/:/etc/nginx/conf.d
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - agrofast-network
 
   agrofast-php-fpm:
     container_name: agrofast-php-fpm
@@ -74,3 +82,5 @@ volumes:
 networks:
   agrofast-network:
     driver: bridge
+  mapdata-network:
+    external: true
