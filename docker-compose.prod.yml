@@ -1,0 +1,72 @@
+services:
+  agrofast-php-fpm:
+    container_name: agrofast-php-fpm
+    extends:
+      file: ./agrofast-api/docker-compose.yml
+      service: agrofast-php-fpm
+
+  agrofast-postgres:
+    container_name: agrofast-postgres
+    extends:
+      file: ./agrofast-api/docker-compose.yml
+      service: agrofast-postgres
+
+  agrofast-redis:
+    container_name: agrofast-redis
+    extends:
+      file: ./agrofast-api/docker-compose.yml
+      service: agrofast-redis
+
+  agrofast-data-bucket:
+    container_name: agrofast-data-bucket
+    extends:
+      file: ./agrofast-api/docker-compose.yml
+      service: agrofast-data-bucket
+
+  agrofast-web:
+    container_name: agrofast-web
+    build:
+      context: ./agrofast-web
+      dockerfile: ./Dockerfile
+    ports:
+      - "3030:3030"
+    volumes:
+      - ./agrofast-web:/web
+    networks:
+      - agrofast-network
+
+  agrofast-portfolio:
+    container_name: agrofast-portfolio
+    build:
+      context: ./agrofast-portfolio
+      dockerfile: ./Dockerfile
+    ports:
+      - "3020:3020"
+    volumes:
+      - ./agrofast-portfolio:/portfolio
+    networks:
+      - agrofast-network
+
+  # agrofast-socket:
+  #   container_name: agrofast-socket
+  #   build:
+  #     context: ./agrofast-socket
+  #     dockerfile: ./Dockerfile
+  #   ports:
+  #     - "8008:3000"
+  #   volumes:
+  #     - ./agrofast-socket:/var/www/html/socket
+  #   networks:
+  #     - agrofast-network
+
+volumes:
+  postgres_data:
+  minio_data:
+  cache:
+    driver: local
+
+networks:
+  agrofast-network:
+    driver: bridge
+  mapdata-network:
+    external: true
