@@ -31,11 +31,11 @@ services:
       file: ./agrofast-api/docker-compose.yml
       service: agrofast-redis
 
-  agrofast-data-bucket:
-    container_name: agrofast-data-bucket
+  agrofast-minio:
+    container_name: agrofast-minio
     extends:
       file: ./agrofast-api/docker-compose.yml
-      service: agrofast-data-bucket
+      service: agrofast-minio
 
   agrofast-web:
     container_name: agrofast-web
@@ -60,18 +60,6 @@ services:
       - ./agrofast-portfolio:/portfolio
     networks:
       - agrofast-network
-
-  # agrofast-socket:
-  #   container_name: agrofast-socket
-  #   build:
-  #     context: ./agrofast-socket
-  #     dockerfile: ./Dockerfile
-  #   ports:
-  #     - "8008:3000"
-  #   volumes:
-  #     - ./agrofast-socket:/var/www/html/socket
-  #   networks:
-  #     - agrofast-network
 
 volumes:
   postgres_data:
