@@ -1,13 +1,17 @@
 services:
   agrofast-nginx:
     container_name: agrofast-nginx
-    image: nginx:alpine
-    restart: always
+    extends:
+      file: /opt/services/services/docker/docker-compose.nginx.yml
+      service: nginx
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./agrofast-api/docker/nginx/conf.d/:/etc/nginx/conf.d
+      - /opt/services/services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /opt/services/services/nginx/conf.d:/etc/nginx/conf.d:ro
+      - /opt/services/services/nginx/default:/etc/nginx/default:ro
+      - ./config/nginx/conf.d/:/etc/nginx/conf.d:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
@@ -16,26 +20,68 @@ services:
   agrofast-php-fpm:
     container_name: agrofast-php-fpm
     extends:
-      file: ./agrofast-api/docker-compose.yml
-      service: agrofast-php-fpm
+      file: /opt/services/template/docker-compose.php.dev.yml
+      service: php-fpm
+    restart: always
+    working_dir: /var/www
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./agrofast-api/:/var/www
+      - /opt/services/services/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    depends_on:
+      - agrofast-nginx
+    networks:
+      - agrofast-network
+      - mapdata-network
 
-  agrofast-postgres:
+  agrofast-postgres: # Only used for creating the application database
     container_name: agrofast-postgres
-    extends:
-      file: ./agrofast-api/docker-compose.yml
-      service: agrofast-postgres
+    image: postgres:15
+    restart: on-failure
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_SCHEMA=${DB_SCHEMA}
+    networks:
+      - agrofast-network
+      - mapdata-network
+    volumes:
+      - ./docker/database/init-db.sh:/usr/local/bin/init-db.sh
+    entrypoint: >
+      sh -c "
+      /usr/local/bin/init-db.sh
+      "
 
-  agrofast-redis:
-    container_name: agrofast-redis
-    extends:
-      file: ./agrofast-api/docker-compose.yml
-      service: agrofast-redis
-
-  agrofast-minio:
+  agrofast-minio: # Only used for creating the application bucket
     container_name: agrofast-minio
-    extends:
-      file: ./agrofast-api/docker-compose.yml
-      service: agrofast-minio
+    image: minio/mc:latest
+    restart: "no"
+    environment:
+      - APP_NAME=${APP_NAME}
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      "
+      mc config host add minio http://minio:9100 ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY};
+      mc mb -p minio/${AWS_BUCKET};
+      echo 'Minio is ready!';
+      exit 0;
+      "
+    networks:
+      - agrofast-network
+      - mapdata-network
+
+  # agrofast-redis:
+  #   container_name: agrofast-redis
+  #   image: redis:alpine
+  #   restart: always
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - agrofast-network
 
   agrofast-web:
     container_name: agrofast-web
@@ -62,6 +108,7 @@ services:
       - agrofast-network
 
 volumes:
+  nginx_data:
   postgres_data:
   minio_data:
   cache:
