@@ -6,7 +6,7 @@ DB_HOST=${DB_HOST:-postgres}
 DB_PORT=${DB_PORT:-5432}
 DB_USERNAME=${DB_USERNAME:-postgres}
 DB_PASSWORD=${DB_PASSWORD:-postgres}
-DB_DATABASE=${DB_DATABASE:-estoque_template_db}
+DB_DATABASE=${DB_DATABASE:-agrofast_db}
 
 echo "Starting the database setup script..."
 

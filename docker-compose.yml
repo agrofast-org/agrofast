@@ -74,14 +74,14 @@ services:
       - agrofast-network
       - mapdata-network
 
-  # agrofast-redis:
-  #   container_name: agrofast-redis
-  #   image: redis:alpine
-  #   restart: always
-  #   ports:
-  #     - "6379:6379"
-  #   networks:
-  #     - agrofast-network
+  agrofast-redis:
+    container_name: agrofast-redis
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - agrofast-network
 
   agrofast-web:
     container_name: agrofast-web
