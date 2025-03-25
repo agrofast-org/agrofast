@@ -35,18 +35,6 @@ services:
     networks:
       - agrofast-network
 
-  agrofast-portfolio:
-    container_name: agrofast-portfolio
-    build:
-      context: ./agrofast-portfolio
-      dockerfile: ./Dockerfile
-    ports:
-      - "3020:3020"
-    volumes:
-      - ./agrofast-portfolio:/portfolio
-    networks:
-      - agrofast-network
-
   # agrofast-socket:
   #   container_name: agrofast-socket
   #   build:

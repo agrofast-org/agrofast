@@ -86,18 +86,6 @@ services:
     networks:
       - agrofast-network
 
-  agrofast-portfolio:
-    container_name: agrofast-portfolio
-    build:
-      context: ./agrofast-portfolio
-      dockerfile: ./Dockerfile.dev
-    ports:
-      - "3020:3020"
-    volumes:
-      - ./agrofast-portfolio:/portfolio
-    networks:
-      - agrofast-network
-
 volumes:
   nginx_data:
   postgres_data:
