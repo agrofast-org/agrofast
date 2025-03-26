@@ -3,9 +3,10 @@
 HOSTS_ENTRY=(
   "127.0.0.1 local.agrofast.tech"
   "127.0.0.1 local.api.agrofast.tech"
+  "127.0.0.1 local.legal.agrofast.tech"
+  "127.0.0.1 local.web.agrofast.tech"
   "127.0.0.1 local.console.agrofast.tech"
   "127.0.0.1 local.socket.agrofast.tech"
-  "127.0.0.1 local.web.agrofast.tech"
 )
 
 for ENTRY in "${HOSTS_ENTRY[@]}"; do
