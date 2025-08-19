@@ -86,6 +86,28 @@ services:
     networks:
       - agrofast-network
 
+  # agrofast-text-nn:
+  #   container_name: agrofast-text-nn
+  #   image: oobabooga/text-generation-webui
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - ./models:/app/models
+  #   environment:
+  #     - MODEL_PATH=/app/models
+  #   restart: unless-stopped
+  #   networks:
+  #     - agrofast-network
+
+  agrofast-vision-nn:
+    container_name: agrofast-vision-nn
+    image: eugencepoi/nsfw_api
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    networks:
+      - agrofast-network
+
 volumes:
   nginx_data:
   postgres_data:
