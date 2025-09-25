@@ -88,25 +88,26 @@ services:
 
   # agrofast-text-nn:
   #   container_name: agrofast-text-nn
-  #   image: oobabooga/text-generation-webui
+  #   image: ghcr.io/huggingface/text-generation-inference:3.3.4
+  #   command: --model-id teknium/OpenHermes-2.5-Mistral-7B
   #   ports:
-  #     - "5000:5000"
+  #     - "8080:80"
   #   volumes:
-  #     - ./models:/app/models
+  #     - ./tgi-models:/models
   #   environment:
-  #     - MODEL_PATH=/app/models
+  #     - HF_MODEL_ID=tekmium/OpenHermes-2.5-Mistral-7B
   #   restart: unless-stopped
   #   networks:
   #     - agrofast-network
 
-  agrofast-vision-nn:
-    container_name: agrofast-vision-nn
-    image: eugencepoi/nsfw_api
-    ports:
-      - "8000:8000"
-    restart: unless-stopped
-    networks:
-      - agrofast-network
+  # agrofast-vision-nn:
+  #   container_name: agrofast-vision-nn
+  #   image: eugencepoi/nsfw_api
+  #   ports:
+  #     - "8000:8000"
+  #   restart: unless-stopped
+  #   networks:
+  #     - agrofast-network
 
 volumes:
   nginx_data:
