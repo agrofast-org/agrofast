@@ -17,15 +17,17 @@ services:
     networks:
       - agrofast-network
 
-  agrofast-php-fpm:
-    container_name: agrofast-php-fpm
+  agrofast-php:
+    container_name: agrofast-php
     extends:
       file: /opt/services/template/docker-compose.php.dev.yml
       service: php-fpm
     restart: always
     working_dir: /var/www
+    command: php artisan migrate --force && php artisan reverb:start --host=0.0.0.0 --port=6001 & php-fpm
     ports:
       - "9000:9000"
+      - "6001:6001"
     volumes:
       - ./agrofast-api/:/var/www
       - /opt/services/services/php/local.ini:/usr/local/etc/php/conf.d/local.ini
@@ -35,24 +37,24 @@ services:
       - agrofast-network
       - mapdata-network
 
-  agrofast-websocket:
-    container_name: agrofast-websocket
-    extends:
-      file: /opt/services/template/docker-compose.php.dev.yml
-      service: php-fpm
-    restart: always
-    working_dir: /var/www
-    command: php artisan reverb:start --host=0.0.0.0 --port=6001
-    ports:
-      - "6001:6001"
-    volumes:
-      - ./agrofast-api/:/var/www
-      - /opt/services/services/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    depends_on:
-      - agrofast-php-fpm
-    networks:
-      - agrofast-network
-      - mapdata-network
+  # agrofast-websocket:
+  #   container_name: agrofast-websocket
+  #   extends:
+  #     file: /opt/services/template/docker-compose.php.dev.yml
+  #     service: php-fpm
+  #   restart: always
+  #   working_dir: /var/www
+  #   command: php artisan reverb:start --host=0.0.0.0 --port=6001
+  #   ports:
+  #     - "6001:6001"
+  #   volumes:
+  #     - ./agrofast-api/:/var/www
+  #     - /opt/services/services/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+  #   depends_on:
+  #     - agrofast-php
+  #   networks:
+  #     - agrofast-network
+  #     - mapdata-network
 
   agrofast-postgres: # Only used for creating the application database
     container_name: agrofast-postgres
